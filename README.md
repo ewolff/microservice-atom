@@ -15,7 +15,7 @@ It uses three microservices:
 orders.
 - Shipment polls the feed every thirty seconds and extract the
   information needed to ship the items.
-- Invoicing pools the feed, too. It extracts all information to send
+- Invoicing polls the feed, too. It extracts all information to send
   out an invoice.
 
 Technologies
