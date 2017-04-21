@@ -1,0 +1,19 @@
+version: '2'
+services:
+  order:
+    build: ../microservice-atom/microservice-atom-order
+    ports:
+      - "8080:8080"
+  shipping:
+    build: ../microservice-atom/microservice-atom-shipping
+    links:
+     - order
+    ports:
+      - "8081:8080"
+  invoicing:
+    build: ../microservice-atom/microservice-atom-invoicing
+    links:
+     - order
+    ports:
+      - "8082:8080"
+
