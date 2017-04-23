@@ -6,7 +6,7 @@ This is a sample to show how the
 used for the communication between microservices. Atom is originally
 designed to let users subscribe to feeds like blogs. Any new blog post
 is published in the feed. However, this approach can be used for data
-such as order information, too.
+such as information about order, too.
 
 The project creates Docker containers.
 
@@ -38,15 +38,15 @@ Remarks on the Code
 -------------------
 
 The microservices are: 
-- microservice-atom-order to create the orders
-- microserivce-demo-shipping for the shipping
-- microservice-demo-invoicing for the invoices
+- [microservice-atom-order](microservice-atom/microservice-atom-order) to create the orders
+- [microserivce-demo-shipping](microservice-atom/microservice-atom-shipping) for the shipping
+- [microservice-demo-invoicing](microservice-atom/microservice-atom-invoicing) for the invoices
 
 
 The microservices have an Java main application in `src/test/java` to
 run them stand alone. microservice-demo-shipping and
 microservice-demo-invoicing both use a stub for the
-other order service.
+other order service for the tests.
 
 The data of an order is copied - including the data of the customer
 and the items. So if a customer or item changes in the order system
@@ -54,3 +54,5 @@ this does not influence existing shipments and invoices. It would be
 odd if a change to a price would also change existing invoices. Also
 only the information needed for the shipment and the invoice are
 copied over to the other systems.
+
+The job to poll the Atom feed is run every 30 seconds.
