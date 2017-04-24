@@ -63,7 +63,7 @@ public class OrderAtomFeedView extends AbstractAtomFeedView {
 
 		for (Order o : orderlist) {
 			Entry entry = new Entry();
-			entry.setId(baseUrl(request) + "order/" + Long.toString(o.getId()));
+			entry.setId("https://github.com/ewolff/microservice-atom/order/" + Long.toString(o.getId()));
 			entry.setUpdated(o.getUpdated());
 			entry.setTitle("Order " + o.getId());
 			List<Content> contents = new ArrayList<Content>();
