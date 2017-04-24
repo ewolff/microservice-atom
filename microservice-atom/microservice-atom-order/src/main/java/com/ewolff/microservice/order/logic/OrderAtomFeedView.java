@@ -75,11 +75,6 @@ public class OrderAtomFeedView extends AbstractAtomFeedView {
 			Content summary = new Content();
 			summary.setValue("This is the order " + o.getId());
 			entry.setSummary(summary);
-			List<Link> links = new ArrayList<>();
-			Link link = new Link();
-			link.setHref(baseUrl(request) + "order/" + Long.toString(o.getId()));
-			links.add(link);
-			entry.setAlternateLinks(links);
 			entries.add(entry);
 		}
 
