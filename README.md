@@ -22,7 +22,7 @@ Technologies
 ------------
 
 - Spring Boot
-- Rome to produce and parse Atom feeds.
+- [Rome](https://rometools.github.io/rome/) to produce and parse Atom feeds.
 - Docker Compose to link the containers.
 
 How To Run
