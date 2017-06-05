@@ -5,15 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ewolff.microservice.shipping.poller.OrderPoller;
+import com.ewolff.microservice.shipping.poller.ShippingPoller;
 
 @Controller
 public class PollController {
 
-	private OrderPoller poller;
+	private ShippingPoller poller;
 
 	@Autowired
-	public PollController(OrderPoller poller) {
+	public PollController(ShippingPoller poller) {
 		this.poller = poller;
 	}
 

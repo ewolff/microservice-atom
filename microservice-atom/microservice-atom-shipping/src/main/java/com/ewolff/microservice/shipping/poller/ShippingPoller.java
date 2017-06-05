@@ -22,9 +22,9 @@ import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 
 @Component
-public class OrderPoller {
+public class ShippingPoller {
 
-	private final Logger log = LoggerFactory.getLogger(OrderPoller.class);
+	private final Logger log = LoggerFactory.getLogger(ShippingPoller.class);
 
 	private String url = "";
 
@@ -35,7 +35,7 @@ public class OrderPoller {
 	private ShipmentRepository orderRepository;
 
 	@Autowired
-	public OrderPoller(@Value("${order.url}") String url, ShipmentRepository orderRepository) {
+	public ShippingPoller(@Value("${order.url}") String url, ShipmentRepository orderRepository) {
 		super();
 		this.url = url;
 		this.orderRepository = orderRepository;
@@ -53,26 +53,17 @@ public class OrderPoller {
 		if (response.getStatusCode() != HttpStatus.NOT_MODIFIED) {
 			log.trace("data has been modified");
 			Feed feed = response.getBody();
-			Date lastUpdateInFeed = null;
 			for (Entry entry : feed.getEntries()) {
 				if ((lastModified == null) || (entry.getUpdated().after(lastModified))) {
-					Shipment order = restTemplate.getForEntity(entry.getAlternateLinks().get(0).getHref(), Shipment.class)
-							.getBody();
-					log.trace("saving order {}", order.getId());
-					if ((lastUpdateInFeed == null) || (entry.getUpdated().after(lastUpdateInFeed))) {
-						lastUpdateInFeed = entry.getUpdated();
-					}
-					orderRepository.save(order);
+					Shipment shipping = restTemplate
+							.getForEntity(entry.getAlternateLinks().get(0).getHref(), Shipment.class).getBody();
+					log.trace("saving order {}", shipping.getId());
+					orderRepository.save(shipping);
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {
 				lastModified = DateUtils.parseDate(response.getHeaders().getFirst("Last-Modified"));
 				log.trace("Last-Modified header {}", lastModified);
-			} else {
-				if (lastUpdateInFeed != null) {
-					lastModified = lastUpdateInFeed;
-					log.trace("Last update in feed {}", lastModified);
-				}
 			}
 		} else {
 			log.trace("no new data");

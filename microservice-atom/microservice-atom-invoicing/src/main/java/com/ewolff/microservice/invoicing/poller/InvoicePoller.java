@@ -22,9 +22,9 @@ import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 
 @Component
-public class OrderPoller {
+public class InvoicePoller {
 
-	private final Logger log = LoggerFactory.getLogger(OrderPoller.class);
+	private final Logger log = LoggerFactory.getLogger(InvoicePoller.class);
 
 	private String url = "";
 
@@ -32,13 +32,13 @@ public class OrderPoller {
 
 	private Date lastModified = null;
 
-	private InvoiceRepository orderRepository;
+	private InvoiceRepository invoiceRepository;
 
 	@Autowired
-	public OrderPoller(@Value("${order.url}") String url, InvoiceRepository orderRepository) {
+	public InvoicePoller(@Value("${order.url}") String url, InvoiceRepository invoiceRepository) {
 		super();
 		this.url = url;
-		this.orderRepository = orderRepository;
+		this.invoiceRepository = invoiceRepository;
 	}
 
 	@Scheduled(fixedDelay = 30000)
@@ -53,26 +53,17 @@ public class OrderPoller {
 		if (response.getStatusCode() != HttpStatus.NOT_MODIFIED) {
 			log.trace("data has been modified");
 			Feed feed = response.getBody();
-			Date lastUpdateInFeed = null;
 			for (Entry entry : feed.getEntries()) {
 				if ((lastModified == null) || (entry.getUpdated().after(lastModified))) {
-					Invoice order = restTemplate.getForEntity(entry.getAlternateLinks().get(0).getHref(), Invoice.class)
-							.getBody();
-					log.trace("saving order {}", order.getId());
-					if ((lastUpdateInFeed == null) || (entry.getUpdated().after(lastUpdateInFeed))) {
-						lastUpdateInFeed = entry.getUpdated();
-					}
-					orderRepository.save(order);
+					Invoice invoice = restTemplate
+							.getForEntity(entry.getAlternateLinks().get(0).getHref(), Invoice.class).getBody();
+					log.trace("saving invoice {}", invoice.getId());
+					invoiceRepository.save(invoice);
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {
 				lastModified = DateUtils.parseDate(response.getHeaders().getFirst("Last-Modified"));
 				log.trace("Last-Modified header {}", lastModified);
-			} else {
-				if (lastUpdateInFeed != null) {
-					lastModified = lastUpdateInFeed;
-					log.trace("Last update in feed {}", lastModified);
-				}
 			}
 		} else {
 			log.trace("no new data");

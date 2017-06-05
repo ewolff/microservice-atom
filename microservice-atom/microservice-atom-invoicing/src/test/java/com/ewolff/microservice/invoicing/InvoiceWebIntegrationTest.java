@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.ewolff.microservice.invoicing.InvoiceRepository;
-import com.ewolff.microservice.invoicing.poller.OrderPoller;
+import com.ewolff.microservice.invoicing.poller.InvoicePoller;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = InvoiceTestApp.class, webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -37,7 +37,7 @@ public class InvoiceWebIntegrationTest {
 	private InvoiceRepository orderRepository;
 
 	@Autowired
-	private OrderPoller orderPoller;
+	private InvoicePoller orderPoller;
 
 	@Test
 	public void isHTMLReturned() {

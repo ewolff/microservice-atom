@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.ewolff.microservice.shipping.poller.OrderPoller;
+import com.ewolff.microservice.shipping.poller.ShippingPoller;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ShippingTestApp.class, webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -36,7 +36,7 @@ public class ShippingWebIntegrationTest {
 	private ShipmentRepository orderRepository;
 
 	@Autowired
-	private OrderPoller orderPoller;
+	private ShippingPoller orderPoller;
 
 	@Test
 	public void isHTMLReturned() {
