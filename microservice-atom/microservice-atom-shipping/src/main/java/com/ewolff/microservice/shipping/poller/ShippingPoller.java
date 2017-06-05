@@ -32,13 +32,13 @@ public class ShippingPoller {
 
 	private Date lastModified = null;
 
-	private ShipmentRepository orderRepository;
+	private ShipmentRepository shippingRepository;
 
 	@Autowired
-	public ShippingPoller(@Value("${order.url}") String url, ShipmentRepository orderRepository) {
+	public ShippingPoller(@Value("${order.url}") String url, ShipmentRepository shippingRepository) {
 		super();
 		this.url = url;
-		this.orderRepository = orderRepository;
+		this.shippingRepository = shippingRepository;
 	}
 
 	@Scheduled(fixedDelay = 30000)
@@ -57,8 +57,8 @@ public class ShippingPoller {
 				if ((lastModified == null) || (entry.getUpdated().after(lastModified))) {
 					Shipment shipping = restTemplate
 							.getForEntity(entry.getAlternateLinks().get(0).getHref(), Shipment.class).getBody();
-					log.trace("saving order {}", shipping.getId());
-					orderRepository.save(shipping);
+					log.trace("saving shipping {}", shipping.getId());
+					shippingRepository.save(shipping);
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {

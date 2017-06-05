@@ -33,10 +33,10 @@ public class ShippingWebIntegrationTest {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
-	private ShipmentRepository orderRepository;
+	private ShipmentRepository shipmentRepository;
 
 	@Autowired
-	private ShippingPoller orderPoller;
+	private ShippingPoller shippingPoller;
 
 	@Test
 	public void isHTMLReturned() {
@@ -47,9 +47,9 @@ public class ShippingWebIntegrationTest {
 
 	@Test
 	public void orderArePolled() {
-		long countBeforePoll = orderRepository.count();
-		orderPoller.poll();
-		assertThat(orderRepository.count(), is(greaterThan(countBeforePoll)));
+		long countBeforePoll = shipmentRepository.count();
+		shippingPoller.poll();
+		assertThat(shipmentRepository.count(), is(greaterThan(countBeforePoll)));
 	}
 
 	private String shippingURL() {

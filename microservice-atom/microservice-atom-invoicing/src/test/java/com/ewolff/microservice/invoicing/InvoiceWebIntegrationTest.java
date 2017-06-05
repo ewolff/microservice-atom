@@ -34,10 +34,10 @@ public class InvoiceWebIntegrationTest {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
-	private InvoiceRepository orderRepository;
+	private InvoiceRepository invoiceRepository;
 
 	@Autowired
-	private InvoicePoller orderPoller;
+	private InvoicePoller invoicePoller;
 
 	@Test
 	public void isHTMLReturned() {
@@ -48,9 +48,9 @@ public class InvoiceWebIntegrationTest {
 
 	@Test
 	public void orderArePolled() {
-		long countBeforePoll = orderRepository.count();
-		orderPoller.poll();
-		assertThat(orderRepository.count(), is(greaterThan(countBeforePoll)));
+		long countBeforePoll = invoiceRepository.count();
+		invoicePoller.poll();
+		assertThat(invoiceRepository.count(), is(greaterThan(countBeforePoll)));
 	}
 
 	private String shippingURL() {
