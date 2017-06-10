@@ -34,15 +34,25 @@ public class ShippingPoller {
 
 	private ShipmentRepository shippingRepository;
 
+	private boolean pollingActivated = true;
+
 	@Autowired
-	public ShippingPoller(@Value("${order.url}") String url, ShipmentRepository shippingRepository) {
+	public ShippingPoller(@Value("${order.url}") String url, @Value("${poller.actived:true}") boolean pollingActivated,
+			ShipmentRepository shippingRepository) {
 		super();
 		this.url = url;
 		this.shippingRepository = shippingRepository;
+		this.pollingActivated = pollingActivated;
 	}
 
 	@Scheduled(fixedDelay = 30000)
 	public void poll() {
+		if (pollingActivated) {
+			pollInternal();
+		}
+	}
+
+	public void pollInternal() {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		if (lastModified != null) {
 			requestHeaders.set("If-Modified-Since", DateUtils.formatDate(lastModified));

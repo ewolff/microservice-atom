@@ -34,15 +34,25 @@ public class InvoicePoller {
 
 	private InvoiceRepository invoiceRepository;
 
+	private boolean pollingActivated;
+
 	@Autowired
-	public InvoicePoller(@Value("${order.url}") String url, InvoiceRepository invoiceRepository) {
+	public InvoicePoller(@Value("${order.url}") String url, @Value("${poller.actived:true}") boolean pollingActivated,
+			InvoiceRepository invoiceRepository) {
 		super();
+		this.pollingActivated = pollingActivated;
 		this.url = url;
 		this.invoiceRepository = invoiceRepository;
 	}
 
 	@Scheduled(fixedDelay = 30000)
 	public void poll() {
+		if (pollingActivated) {
+			pollInternal();
+		}
+	}
+
+	public void pollInternal() {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		if (lastModified != null) {
 			requestHeaders.set("If-Modified-Since", DateUtils.formatDate(lastModified));

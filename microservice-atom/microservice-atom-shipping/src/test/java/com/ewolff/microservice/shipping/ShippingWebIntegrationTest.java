@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -20,8 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.ewolff.microservice.shipping.poller.ShippingPoller;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ShippingTestApp.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
@@ -32,24 +29,11 @@ public class ShippingWebIntegrationTest {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	@Autowired
-	private ShipmentRepository shipmentRepository;
-
-	@Autowired
-	private ShippingPoller shippingPoller;
-
 	@Test
 	public void isHTMLReturned() {
 		String body = getForMediaType(String.class, MediaType.TEXT_HTML, shippingURL());
 
 		assertThat(body, containsString("<div"));
-	}
-
-	@Test
-	public void orderArePolled() {
-		long countBeforePoll = shipmentRepository.count();
-		shippingPoller.poll();
-		assertThat(shipmentRepository.count(), is(greaterThan(countBeforePoll)));
 	}
 
 	private String shippingURL() {

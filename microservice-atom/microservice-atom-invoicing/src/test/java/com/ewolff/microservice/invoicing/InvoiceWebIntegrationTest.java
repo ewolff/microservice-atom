@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -20,9 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.ewolff.microservice.invoicing.InvoiceRepository;
-import com.ewolff.microservice.invoicing.poller.InvoicePoller;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = InvoiceTestApp.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
@@ -33,24 +29,11 @@ public class InvoiceWebIntegrationTest {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	@Autowired
-	private InvoiceRepository invoiceRepository;
-
-	@Autowired
-	private InvoicePoller invoicePoller;
-
 	@Test
 	public void isHTMLReturned() {
 		String body = getForMediaType(String.class, MediaType.TEXT_HTML, shippingURL());
 
 		assertThat(body, containsString("<div"));
-	}
-
-	@Test
-	public void orderArePolled() {
-		long countBeforePoll = invoiceRepository.count();
-		invoicePoller.poll();
-		assertThat(invoiceRepository.count(), is(greaterThan(countBeforePoll)));
 	}
 
 	private String shippingURL() {
