@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ewolff.microservice.shipping.Shipment;
 import com.ewolff.microservice.shipping.ShipmentRepository;
+import com.ewolff.microservice.shipping.ShipmentService;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 
@@ -34,14 +35,17 @@ public class ShippingPoller {
 
 	private ShipmentRepository shippingRepository;
 
+	private ShipmentService shipmentService;
+
 	private boolean pollingActivated = true;
 
 	@Autowired
 	public ShippingPoller(@Value("${order.url}") String url, @Value("${poller.actived:true}") boolean pollingActivated,
-			ShipmentRepository shippingRepository) {
+			ShipmentRepository shippingRepository, ShipmentService shipmentService) {
 		super();
 		this.url = url;
 		this.shippingRepository = shippingRepository;
+		this.shipmentService = shipmentService;
 		this.pollingActivated = pollingActivated;
 	}
 
@@ -68,7 +72,7 @@ public class ShippingPoller {
 					Shipment shipping = restTemplate
 							.getForEntity(entry.getContents().get(0).getSrc(), Shipment.class).getBody();
 					log.trace("saving shipping {}", shipping.getId());
-					shippingRepository.save(shipping);
+					shipmentService.ship(shipping);
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {

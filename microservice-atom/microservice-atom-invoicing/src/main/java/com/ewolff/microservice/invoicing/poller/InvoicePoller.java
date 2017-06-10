@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ewolff.microservice.invoicing.Invoice;
 import com.ewolff.microservice.invoicing.InvoiceRepository;
+import com.ewolff.microservice.invoicing.InvoiceService;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 
@@ -36,13 +37,16 @@ public class InvoicePoller {
 
 	private boolean pollingActivated;
 
+	private InvoiceService invoiceService;
+
 	@Autowired
 	public InvoicePoller(@Value("${order.url}") String url, @Value("${poller.actived:true}") boolean pollingActivated,
-			InvoiceRepository invoiceRepository) {
+			InvoiceRepository invoiceRepository, InvoiceService invoiceService) {
 		super();
 		this.pollingActivated = pollingActivated;
 		this.url = url;
 		this.invoiceRepository = invoiceRepository;
+		this.invoiceService = invoiceService;
 	}
 
 	@Scheduled(fixedDelay = 30000)
@@ -68,7 +72,7 @@ public class InvoicePoller {
 					Invoice invoice = restTemplate
 							.getForEntity(entry.getContents().get(0).getSrc(), Invoice.class).getBody();
 					log.trace("saving invoice {}", invoice.getId());
-					invoiceRepository.save(invoice);
+					invoiceService.generateInvoice(invoice);
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {
