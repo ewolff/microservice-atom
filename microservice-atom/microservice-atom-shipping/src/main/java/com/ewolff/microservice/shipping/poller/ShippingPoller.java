@@ -66,7 +66,7 @@ public class ShippingPoller {
 			for (Entry entry : feed.getEntries()) {
 				if ((lastModified == null) || (entry.getUpdated().after(lastModified))) {
 					Shipment shipping = restTemplate
-							.getForEntity(entry.getAlternateLinks().get(0).getHref(), Shipment.class).getBody();
+							.getForEntity(entry.getContents().get(0).getSrc(), Shipment.class).getBody();
 					log.trace("saving shipping {}", shipping.getId());
 					shippingRepository.save(shipping);
 				}

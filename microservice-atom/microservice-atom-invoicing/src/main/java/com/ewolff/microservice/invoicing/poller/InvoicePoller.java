@@ -66,7 +66,7 @@ public class InvoicePoller {
 			for (Entry entry : feed.getEntries()) {
 				if ((lastModified == null) || (entry.getUpdated().after(lastModified))) {
 					Invoice invoice = restTemplate
-							.getForEntity(entry.getAlternateLinks().get(0).getHref(), Invoice.class).getBody();
+							.getForEntity(entry.getContents().get(0).getSrc(), Invoice.class).getBody();
 					log.trace("saving invoice {}", invoice.getId());
 					invoiceRepository.save(invoice);
 				}
