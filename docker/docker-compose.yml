@@ -8,14 +8,22 @@ services:
      - invoicing
     ports:
      - "8080:80"
+  postgres:
+    build: postgres
+    environment:
+      POSTGRES_PASSWORD: dbpass
+      POSTGRES_USER: dbuser
   order:
     build: ../microservice-atom/microservice-atom-order
+    links:
+     - postgres
   shipping:
     build: ../microservice-atom/microservice-atom-shipping
     links:
      - order
+     - postgres
   invoicing:
     build: ../microservice-atom/microservice-atom-invoicing
     links:
      - order
-
+     - postgres
