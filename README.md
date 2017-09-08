@@ -28,11 +28,7 @@ Technologies
 How To Run
 ----------
 
-The demo can be run with
-[Docker Machine and Docker Compose](docker/README.md).
-
-Once you create an order in the order application, after a while the
-invoice and the shipment should be shown in the other applications.
+See [How to run](HOW-TO-RUN.md) for details.
 
 Remarks on the Code
 -------------------
