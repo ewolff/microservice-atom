@@ -1,6 +1,8 @@
 Microservice Atom Sample
 ==================
 
+[Deutsche Anleitung zum Starten des Beispiels](WIE-LAUFEN.md)
+
 This is a sample to show how the
 [Atom](https://validator.w3.org/feed/docs/atom.html) protocol can be
 used for the communication between microservices. Atom is originally
