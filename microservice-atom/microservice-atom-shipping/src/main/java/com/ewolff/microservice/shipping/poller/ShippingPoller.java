@@ -59,7 +59,7 @@ public class ShippingPoller {
 	public void pollInternal() {
 		HttpHeaders requestHeaders = new HttpHeaders();
 		if (lastModified != null) {
-			requestHeaders.set("If-Modified-Since", DateUtils.formatDate(lastModified));
+			requestHeaders.set(HttpHeaders.IF_MODIFIED_SINCE, DateUtils.formatDate(lastModified));
 		}
 		HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
 		ResponseEntity<Feed> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Feed.class);
@@ -76,7 +76,7 @@ public class ShippingPoller {
 				}
 			}
 			if (response.getHeaders().getFirst("Last-Modified") != null) {
-				lastModified = DateUtils.parseDate(response.getHeaders().getFirst("Last-Modified"));
+				lastModified = DateUtils.parseDate(response.getHeaders().getFirst(HttpHeaders.LAST_MODIFIED));
 				log.trace("Last-Modified header {}", lastModified);
 			}
 		} else {

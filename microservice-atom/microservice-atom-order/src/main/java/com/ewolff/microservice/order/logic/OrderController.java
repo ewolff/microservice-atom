@@ -1,6 +1,9 @@
 package com.ewolff.microservice.order.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,8 @@ import com.ewolff.microservice.order.item.ItemRepository;
 
 @Controller
 class OrderController {
+
+	private final Logger log = LoggerFactory.getLogger(OrderController.class);
 
 	private OrderRepository orderRepository;
 
@@ -52,8 +57,11 @@ class OrderController {
 	public ModelAndView orderFeed(WebRequest webRequest) {
 		if ((orderRepository.lastUpdate() != null)
 				&& (webRequest.checkNotModified(orderRepository.lastUpdate().getTime()))) {
+			log.trace("Not Modified returned - request with If-Modified-Since {}",
+					webRequest.getHeader(HttpHeaders.IF_MODIFIED_SINCE));
 			return null;
 		}
+		log.trace("Returned Feed");
 		return new ModelAndView(new OrderAtomFeedView(orderRepository), "orders", orderRepository.findAll());
 	}
 
