@@ -111,6 +111,9 @@ msatom_atomcat                                        latest              461e8b
 msatom_postgres                                        latest              2b2f4f035d6d        12 days ago          269MB
 ```
 
+Wenn der Build nicht klappt, dann kann man mit `docker-compose build
+--no-cache` die Container komplett neu bauen.
+
 Nun kannst Du die Container mit `docker-compose up -d` starten. Die
 Option `-d` bedeutet, dass die Container im Hintergrund gestartet
 werden und keine Ausgabe auf der Kommandozeile erzeugen.

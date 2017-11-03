@@ -103,6 +103,9 @@ msatom_apache                                           latest              af6e
 msatom_postgres                                         latest              2b2f4f035d6d        12 days ago         269MB
 ```
 
+If the build fails, you can use `docker-compose build --no-cache` to
+build them from scratch.
+
 Now you can start the containers using `docker-compose up -d`. The
 `-d` option means that the containers will be started in the
 background and won't output their stdout to the command line:
