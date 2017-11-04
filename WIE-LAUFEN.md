@@ -1,6 +1,8 @@
 # Beispiel starten
 
 Die ist eine Schritt-für-Schritt-Anleitung zum Starten der Beispiele.
+Informationen zu Maven und Docker finden sich im
+[Cheatsheet-Projekt](https://github.com/ewolff/cheatsheets-DE).
 
 ## Installation
 
@@ -42,7 +44,6 @@ package`. Das wird einige Zeit dauern:
 ```
 [~/microservice-atom/microservice-atom-demo]mvn clean package
 ...
-[Deutsche Anleitung zum Starten des Beispiels](WIE-LAUFEN.md)
 [INFO] 
 [INFO] --- maven-jar-plugin:2.6:jar (default-jar) @ microservice-atom-invoicing ---
 [INFO] Building jar: /Users/wolff/microservice-atom/microservice-atom/microservice-atom-invoicing/target/microservice-atom-invoicing-0.0.1-SNAPSHOT.jar
@@ -63,6 +64,9 @@ package`. Das wird einige Zeit dauern:
 [INFO] Final Memory: 48M/517M
 [INFO] ------------------------------------------------------------------------
 ```
+
+Weitere Information zu Maven gibt es im
+[Maven Cheatsheet](https://github.com/ewolff/cheatsheets-DE/blob/master/MavenCheatSheet.md).
 
 Falls es dabei zu Fehlern kommt:
 
@@ -110,6 +114,9 @@ msatom_order                                           latest              0f984
 msatom_atomcat                                        latest              461e8b02bb99        12 days ago          113MB
 msatom_postgres                                        latest              2b2f4f035d6d        12 days ago          269MB
 ```
+
+Weitere Information zu Docker gibt es im
+[Docker Cheatsheet](https://github.com/ewolff/cheatsheets-DE/blob/master/DockerCheatSheet.md).
 
 Wenn der Build nicht klappt, dann kann man mit `docker-compose build
 --no-cache` die Container komplett neu bauen.
