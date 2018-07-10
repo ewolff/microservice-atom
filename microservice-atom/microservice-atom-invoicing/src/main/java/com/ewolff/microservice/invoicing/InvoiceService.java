@@ -21,7 +21,7 @@ public class InvoiceService {
 
 	@Transactional
 	public void generateInvoice(Invoice invoice) {
-		if (invoiceRepository.exists(invoice.getId())) {
+		if (invoiceRepository.existsById(invoice.getId())) {
 			log.info("Invoice id {} already exists - ignored", invoice.getId());
 		} else {
 			invoiceRepository.save(invoice);

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.ewolff.microservice.invoicing.Invoice;
-import com.ewolff.microservice.invoicing.InvoiceRepository;
 import com.ewolff.microservice.invoicing.InvoiceService;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
@@ -33,19 +32,16 @@ public class InvoicePoller {
 
 	private Date lastModified = null;
 
-	private InvoiceRepository invoiceRepository;
-
 	private boolean pollingActivated;
 
 	private InvoiceService invoiceService;
 
 	@Autowired
 	public InvoicePoller(@Value("${order.url}") String url, @Value("${poller.actived:true}") boolean pollingActivated,
-			InvoiceRepository invoiceRepository, InvoiceService invoiceService) {
+			InvoiceService invoiceService) {
 		super();
 		this.pollingActivated = pollingActivated;
 		this.url = url;
-		this.invoiceRepository = invoiceRepository;
 		this.invoiceService = invoiceService;
 	}
 

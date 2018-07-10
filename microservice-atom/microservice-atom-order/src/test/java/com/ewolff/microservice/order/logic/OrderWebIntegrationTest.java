@@ -2,23 +2,21 @@ package com.ewolff.microservice.order.logic;
 
 import static org.junit.Assert.*;
 
-import java.net.URI;
 import java.util.stream.StreamSupport;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriTemplate;
 
 import com.ewolff.microservice.order.OrderApp;
 import com.ewolff.microservice.order.customer.Customer;
@@ -82,7 +80,7 @@ public class OrderWebIntegrationTest {
 
 	@Test
 	public void IsOrderFormDisplayed() {
-		ResponseEntity<String> resultEntity = restTemplate.getForEntity(orderURL() + "/form", String.class);
+		ResponseEntity<String> resultEntity = restTemplate.getForEntity(orderURL() + "/form.html", String.class);
 		assertTrue(resultEntity.getStatusCode().is2xxSuccessful());
 		assertTrue(resultEntity.getBody().contains("<form"));
 	}
@@ -95,8 +93,7 @@ public class OrderWebIntegrationTest {
 		map.add("customer", Long.toString(customer.getCustomerId()));
 		map.add("orderLine[0].item", Long.toString(item.getItemId()));
 		map.add("orderLine[0].count", "42");
-		URI uri = restTemplate.postForLocation(orderURL(), map, String.class);
-		UriTemplate uriTemplate = new UriTemplate(orderURL() + "/{id}");
+		restTemplate.postForLocation(orderURL(), map, String.class);
 		assertEquals(before + 1, orderRepository.count());
 	}
 }
